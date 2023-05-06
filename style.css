@@ -1,0 +1,228 @@
+body{
+    width: 100%;
+    background:  linear-gradient(45deg, #6f86d6, #89f7fe);
+    height: 100%;
+}
+.home{
+    width: 100%;
+    height: 100%;
+}
+.model_login{
+    display: none;
+    margin: auto;
+    border-radius: 25px;
+    width: 200px;
+    height: 400;
+    background-color: white;
+    opacity: 0.5;
+
+}
+.model_login p{
+    text-align: center;
+    padding-top: 20px;
+} 
+.input_tk{
+    border: 2px solid red;
+    border-radius: 10px;
+    padding: 10px 10px 10px 10px;
+    margin: 10px;
+}
+.input_tk:hover,.input_tk:focus,.btn:hover {
+    cursor: pointer;
+    border: 2px solid rgb(0, 255, 68);
+
+    background-color: rgb(0, 149, 255);
+}
+.btnlogin{
+    display: flex;
+    justify-content: center;
+}
+.btn{
+
+    border: 2px solid red;
+    border-radius: 10px;
+    align-items: center;
+    padding: 10px;
+}
+
+/* nhà */
+
+.container,.work{
+    margin-top: 25px;
+}
+.work{
+    border-radius: 25px;
+    background-color: white;
+    opacity: 0.5;
+
+}
+.home_name {
+
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    opacity: 0.5;
+
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .home_name p:first-child {
+    margin-right: auto; /* Đẩy chữ Nhà sang bên trái */
+  }
+  
+  .trangthai {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* Căn giữa phần tử con theo chiều ngang */
+  }
+  
+  .trangthai p {
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 18px;
+  }
+  
+  .show_tt {
+    /* display: none; */
+    /* position: absolute; */
+    top: calc(100% + 10px);
+    left: 0;
+    width: 300px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+  }
+  
+  .showNumber {
+    display: flex;
+    justify-content: flex-start; /* Căn giữa phần tử con theo chiều ngang */
+    align-items: center; /* Căn giữa phần tử con theo chiều dọc */
+    margin-right: 20px; /* Khoảng cách giữa hai phần tử con */
+  }
+  
+  .show_chart {
+    display: none;
+
+    height: 200px;
+    width: 100%;
+    background-color: #ccc;
+    border-radius: 10px;
+  }
+  
+  /* Media queries cho màn hình điện thoại */
+  @media (max-width: 768px) {
+    .home_name {
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+    }
+  
+    .home_name p:first-child {
+      margin-right: initial;
+      margin-bottom: 10px;
+    }
+  
+    .trangthai {
+      margin-top: 10px;
+    }
+  
+    .show_tt {
+      position: static;
+      width: auto;
+      margin-top: 10px;
+    }
+  
+    .showNumber {
+      margin-right: initial;
+      margin-bottom: 10px;
+    }
+  }
+  
+
+
+/* pick iteam */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+  }
+  
+  .switch input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  input:checked + .slider {
+    background-color: #2196F3;
+  }
+  
+  input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+  }
+  
+  input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+  }
+  
+  /* Rounded sliders */
+  .slider.round {
+    border-radius: 34px;
+  }
+  
+  .slider.round:before {
+    border-radius: 50%;
+  }
+
+
+.okk{
+    margin: 25px 25px 25px 25px;
+
+}
+
+.pick_iteam{
+    align-items: center;
+    align-content: center;
+    display: flex;
+    justify-content:space-around;
+    border: 2px solid black;
+
+}
+.pick_iteam p, .pick_iteam button{
+    
+}
+.pick_tt{
+    list-style: none;
+}
