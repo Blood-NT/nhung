@@ -135,8 +135,8 @@ function updateTandH(temperature, humidity) {
 const den1Checkbox = document.getElementById('den1Checkbox');
 const den2Checkbox = document.getElementById('den2Checkbox');
 const den3Checkbox = document.getElementById('den3Checkbox');
-const den4Checkbox = document.getElementById('den3Checkbox');
-const quatCheckbox = document.getElementById('den3Checkbox');
+const den4Checkbox = document.getElementById('den4Checkbox');
+const quatCheckbox = document.getElementById('quatCheckbox');
 
 // Hàm cập nhật trạng thái checkbox dựa trên biến den1 và các biến tương ứng
 function checkbtn(D1,D2,D3,D4,QQ) {
