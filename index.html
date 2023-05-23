@@ -1,468 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
 
-#include <ESP8266WiFi.h>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
 
-    // ten wifi va mat khau wifi
-    const char* ssid     = "Wifi Xin Xo";
-    const char* password = "d19cqcn02";
-    WiFiServer server(80);
-    String header;
-    String trang_thai_led1 = "tat";
-    String trang_thai_led2 = "tat";
-    String trang_thai_led3 = "tat";
-    String trang_thai_led4 = "tat";
-    // chan su dung
-    const int led1 = 5;
-    const int led2 = 4;
-    const int led3 = 0;
-    const int led4 = 2;
-    
-    void setup() {
-      Serial.begin(9600);
-      // cai dat cong output
-      pinMode(led1, OUTPUT);
-      pinMode(led2, OUTPUT);
-      pinMode(led3, OUTPUT);
-      pinMode(led4, OUTPUT);
-      digitalWrite(led1, LOW);
-      digitalWrite(led2, LOW);
-      digitalWrite(led3, LOW);
-      digitalWrite(led4, LOW);
-    
-      Serial.print("Dang ket noi voi mang wifi ");
-      Serial.print(ssid);
-      WiFi.begin(ssid, password);
-      while (WiFi.status() != WL_CONNECTED) {
-        delay(100);
-      }
-      Serial.print("");
-      Serial.print("Da ket noi wifi thanh cong");
-      Serial.print("Dia chi IP cua thiet bi la : ");
-      Serial.print(WiFi.localIP());
-      server.begin();
-    }
-    
-    void loop(){
-      WiFiClient client = server.available();   // lang nghe xem co client nao dang ket noi den thiet bi khong
-    
-      if (client) {                             
-        // Serial.print("New Client.");    
-        String currentLine = "";                
-        while (client.connected()) {            
-          if (client.available()) {             
-            char c = client.read();             
-            // Serial.write(c);   
-                         
-            header += c;
-            
-            if (c == 'n') {                    
-              if (currentLine.length() == 0) {
-                // HTTP headers always start with a response code (e.g. HTTP/1.1 200 OK)
-                client.println("HTTP/1.1 200 OK");
-                client.println("Content-type:text/html");
-                client.println("Connection: close");
-                client.println();
-    
-                // Bat tat 4 led
-                if (header.indexOf("GET /1/bat") >= 0) {
-                  Serial.print("Led 1 bat");
-                  trang_thai_led1 = "bat";
-                  digitalWrite(led1, HIGH);
-                } else if (header.indexOf("GET /1/tat") >= 0) {
-                  Serial.print("Led 1 tat");
-                  trang_thai_led1 = "tat";
-                  digitalWrite(led1, LOW);
-                }
-                  else if (header.indexOf("GET /2/bat") >= 0) {
-                  Serial.print("Led 2 bat");
-                  trang_thai_led2 = "bat";
-                  digitalWrite(led2, HIGH);
-                } else if (header.indexOf("GET /2/tat") >= 0) {
-                  Serial.print("Led 2 tat");
-                  trang_thai_led2  = "tat";
-                  digitalWrite(led2, LOW);
-                }
-                  else if (header.indexOf("GET /3/bat") >= 0) {
-                  Serial.print("Led 3 bat");
-                  trang_thai_led3 = "bat";
-                  digitalWrite(led3, HIGH);
-                } else if (header.indexOf("GET /3/tat") >= 0) {
-                  Serial.print("Led 3 tat");
-                  trang_thai_led3  = "tat";
-                  digitalWrite(led3, LOW);
-                }            
-                  else if (header.indexOf("GET /4/bat") >= 0) {
-                  Serial.print("Led 4 bat");
-                  trang_thai_led4 = "bat";
-                  digitalWrite(led4, HIGH);
-                } else if (header.indexOf("GET /4/tat") >= 0) {
-                  Serial.print("Led 4 tat");
-                  trang_thai_led4  = "tat";
-                  digitalWrite(led4, LOW);
-                }           
+<body>
+    <div class="home">
+        <div class="model_login">
+            <p>Đăng nhập</p>
+            <input type="text" placeholder="Tài khoản" class="input_tk">
+            <input type="text" placeholder="Mật khẩu" class="input_tk">
+            <div class="btnlogin">
+                <button onclick="ok()" class="btn">Đăng nhập</button>
 
-client.println("<!DOCTYPE html>");
- client.println("<html lang="en">");
- client.println("");
- client.println("<head>");
- client.println("<meta charset="UTF-8">");
- client.println("<meta http-equiv="X-UA-Compatible" content="IE=edge">");
- client.println("<meta name="viewport" content="width=device-width, initial-scale=1.0">");
- client.println("<title>Document</title>");
- client.println("<style>");
+            </div>
+        </div>
 
-client.println("body{");
-client.println("width: 100%;");
-client.println("background:  linear-gradient(45deg, #6f86d6, #89f7fe);");
-client.println("height: 100%;");
-client.println("}");
-client.println(".home{");
-client.println("width: 100%;");
-client.println("height: 100%;");
-client.println("}");
-client.println(".model_login{");
-client.println("display: none;");
-client.println("margin: auto;");
-client.println("border-radius: 25px;");
-client.println("width: 200px;");
-client.println("height: 400;");
-client.println("background-color: white;");
-client.println("opacity: 0.5;");
-client.println("");
-client.println("}");
-client.println(".model_login p{");
-client.println("text-align: center;");
-client.println("padding-top: 20px;");
-client.println("} ");
-client.println(".input_tk{");
-client.println("border: 2px solid red;");
-client.println("border-radius: 10px;");
-client.println("padding: 10px 10px 10px 10px;");
-client.println("margin: 10px;");
-client.println("}");
-client.println(".input_tk:hover,.input_tk:focus,.btn:hover {");
-client.println("cursor: pointer;");
-client.println("border: 2px solid rgb(0, 255, 68);");
-client.println("background-color: rgb(0, 149, 255);");
-client.println("}");
-client.println(".btnlogin{");
-client.println("display: flex;");
-client.println("justify-content: center;");
-client.println("}");
-client.println(".btn{");
-client.println("border: 2px solid red;");
-client.println("border-radius: 10px;");
-client.println("align-items: center;");
-client.println("padding: 10px;");
-client.println("}");
-client.println("/* nhà */");
-client.println(".container,.work{");
-client.println("margin-top: 25px;");
-client.println("}");
-client.println(".work{");
-client.println("border-radius: 25px;");
-client.println("background-color: white;");
-client.println("opacity: 0.5;");
-client.println("}");
-client.println(".home_name {");
-client.println("display: flex;");
-client.println("justify-content: space-between;");
-client.println("align-items: center;");
-client.println("background-color: white;");
-client.println("opacity: 0.5;");
-client.println("padding: 20px;");
-client.println("border-radius: 10px;");
-client.println("box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);");
-client.println("}");
-client.println(".home_name p:first-child {");
-client.println("margin-right: auto; /* Đẩy chữ Nhà sang bên trái */");
-client.println("}");
-client.println(".trangthai {");
-client.println("display: flex;");
-client.println("flex-direction: column;");
-client.println("align-items: flex-end; /* Căn giữa phần tử con theo chiều ngang */");
-client.println("}");
-client.println(".trangthai p {");
-client.println("margin-bottom: 10px;");
-client.println("font-weight: bold;");
-client.println("font-size: 18px;");
-client.println("}");
-client.println(".show_tt {");
-client.println("/* display: none; */");
-client.println("/* position: absolute; */");
-client.println("top: calc(100% + 10px);");
-client.println("left: 0;");
-client.println("width: 300px;");
-client.println("background-color: white;");
-client.println("border-radius: 10px;");
-client.println("box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);");
-client.println("padding: 20px;");
-client.println("}");
-client.println(".showNumber {");
-client.println("display: flex;");
-client.println("justify-content: flex-start; /* Căn giữa phần tử con theo chiều ngang */");
-client.println("align-items: center; /* Căn giữa phần tử con theo chiều dọc */");
-client.println("margin-right: 20px; /* Khoảng cách giữa hai phần tử con */");
-client.println("}");
-client.println(".show_chart {");
-client.println("display: none;");
-client.println("height: 200px;");
-client.println("width: 100%;");
-client.println("background-color: #ccc;");
-client.println("border-radius: 10px;");
-client.println("}");
-client.println("/* Media queries cho màn hình điện thoại */");
-client.println("@media (max-width: 768px) {");
-client.println(".home_name {");
-client.println("flex-direction: column;");
-client.println("justify-content: center;");
-client.println("text-align: center;");
-client.println("}");
-client.println(".home_name p:first-child {");
-client.println("margin-right: initial;");
-client.println("margin-bottom: 10px;");
-client.println("}");
-client.println(".trangthai {");
-client.println("margin-top: 10px;");
-client.println("}");
-client.println(".show_tt {");
-client.println("position: static;");
-client.println("width: auto;");
-client.println("margin-top: 10px;");
-client.println("}");
-client.println(".showNumber {");
-client.println("margin-right: initial;");
-client.println("margin-bottom: 10px;");
-client.println("}");
-client.println("}");
-client.println("/* pick iteam */");
-client.println(".switch {");
-client.println("position: relative;");
-client.println("display: inline-block;");
-client.println("width: 60px;");
-client.println("height: 34px;");
-client.println("}");
-client.println(".switch input { ");
-client.println("opacity: 0;");
-client.println("width: 0;");
-client.println("height: 0;");
-client.println("}");
-client.println(".slider {");
-client.println("position: absolute;");
-client.println("cursor: pointer;");
-client.println("top: 0;");
-client.println("left: 0;");
-client.println("right: 0;");
-client.println("bottom: 0;");
-client.println("background-color: #ccc;");
-client.println("-webkit-transition: .4s;");
-client.println("transition: .4s;");
-client.println("}");
-client.println(".slider:before {");
-client.println("position: absolute;");
-client.println("content: "";");
-client.println("height: 26px;");
-client.println("width: 26px;");
-client.println("left: 4px;");
-client.println("bottom: 4px;");
-client.println("background-color: white;");
-client.println("-webkit-transition: .4s;");
-client.println("transition: .4s;");
-client.println("}");
-client.println("input:checked + .slider {");
-client.println("background-color: #2196F3;");
-client.println("}");
-client.println("input:focus + .slider {");
-client.println("box-shadow: 0 0 1px #2196F3;");
-client.println("}");
-client.println("input:checked + .slider:before {");
-client.println("-webkit-transform: translateX(26px);");
-client.println("-ms-transform: translateX(26px);");
-client.println("transform: translateX(26px);");
-client.println("}");
-client.println("/* Rounded sliders */");
-client.println(".slider.round {");
-client.println("border-radius: 34px;");
-client.println("}");
-client.println(".slider.round:before {");
-client.println("border-radius: 50%;");
-client.println("}");
-client.println(".okk{");
-client.println("margin: 25px 25px 25px 25px;");
-client.println("}");
-client.println(".pick_iteam{");
-client.println("align-items: center;");
-client.println("align-content: center;");
-client.println("display: flex;");
-client.println("justify-content:space-around;");
-client.println("border: 2px solid black;");
-client.println("}");
-client.println(".pick_iteam p, .pick_iteam button{");
-client.println("}");
-client.println(".pick_tt{");
-client.println("list-style: none;");
-client.println("}");
+        <div class="container">
+            <div class="show">
+                <div class="home_name">
+                    <p>Nhà</p>
+                    <div class="trangthai">
+                        <p>trạng thái</p>
+                        <div class="show_tt">
+                            <div class="showNumber">
+                                <p id="temperature">nhiệt độ</p>
+                                <p id="humidity">Độ ẩm</p>
+                            </div>
+                            <div class="show_chart">
 
- client.println("</style></head>");
- client.println("");
- client.println("<body>");
- client.println("<div class="home">");
- client.println("<div class="model_login">");
- client.println("<p>Đăng nhập</p>");
- client.println("<input type="text" placeholder="Tài khoản" class="input_tk">");
- client.println("<input type="text" placeholder="Mật khẩu" class="input_tk">");
- client.println("<div class="btnlogin">");
- client.println("<button onclick="ok()" class="btn">Đăng nhập</button>");
- client.println("");
- client.println("</div>");
- client.println("</div>");
- client.println("");
- client.println("<div class="container">");
- client.println("<div class="show">");
- client.println("<div class="home_name">");
- client.println("<p>Nhà</p>");
- client.println("<div class="trangthai">");
- client.println("<p>trạng thái</p>");
- client.println("<div class="show_tt">");
- client.println("<div class="showNumber">");
- client.println("<p>nhiệt độ</p>");
- client.println("<p>Độ ẩm</p>");
- client.println("");
- client.println("</div>");
- client.println("<div class="show_chart">");
- client.println("");
- client.println("</div>");
- client.println("</div>");
- client.println("</div>");
- client.println("</div>");
- client.println("</div>");
- client.println("<div class="work">");
- client.println("<div class="okk">");
- client.println("<li class="pick_tt">");
- client.println("<div class="pick_iteam">");
- client.println("<p>đèn 1</p>");
- client.println("<p>Trạng thái</p>");
- client.println("<label class="switch">");
- client.println("<input type="checkbox">");
- client.println("<span class="slider round"></span>");
- client.println("</label>");
- client.println("</div>");
- client.println("</li>");
- client.println("<li class="pick_tt">");
- client.println("<div class="pick_iteam">");
- client.println("<p>đèn 1</p>");
- client.println("<p>Trạng thái</p>");
- client.println("<label class="switch">");
- client.println("<input type="checkbox">");
- client.println("<span class="slider round"></span>");
- client.println("</label>");
- client.println("</div>");
- client.println("</li>");
- client.println("<li class="pick_tt">");
- client.println("<div class="pick_iteam">");
- client.println("<p>đèn 2</p>");
- client.println("<p>Trạng thái</p>");
- client.println("<label class="switch">");
- client.println("<input type="checkbox">");
- client.println("<span class="slider round"></span>");
- client.println("</label>");
- client.println("</div>");
- client.println("</li>");
- client.println("<li class="pick_tt">");
- client.println("<div class="pick_iteam">");
- client.println("<p>đèn 3</p>");
- client.println("<p>Trạng thái</p>");
- client.println("<label class="switch">");
- client.println("<input type="checkbox">");
- client.println("<span class="slider round"></span>");
- client.println("</label>");
- client.println("</div>");
- client.println("</li>");
- client.println("<li class="pick_tt">");
- client.println("<div class="pick_iteam">");
- client.println("<p>đèn 4</p>");
- client.println("<p>Trạng thái</p>");
- client.println("<label class="switch">");
- client.println("<input type="checkbox">");
- client.println("<span class="slider round"></span>");
- client.println("</label>");
- client.println("</div>");
- client.println("</li>");
- client.println("</div>");
- client.println("");
- client.println("</div>");
- client.println("</div>");
- client.println("");
- client.println("</div>");
- client.println("<script src="./main.js"></script>");
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="work">
+                <div class="okk">
+                    <li class="pick_tt">
+                        <div class="pick_iteam">
+                            <p>đèn 1</p>
+                            <p>Trạng thái</p>
+                            <label class="switch">
+                                <input type="checkbox" id="den1Checkbox">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </li>
+                    <li class="pick_tt">
+                        <div class="pick_iteam">
+                            <p>đèn 2</p>
+                            <p>Trạng thái</p>
+                            <label class="switch">
+                                <input type="checkbox" id="den2Checkbox">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </li>
+                    <li class="pick_tt">
+                        <div class="pick_iteam">
+                            <p>đèn 3</p>
+                            <p>Trạng thái</p>
+                            <label class="switch">
+                                <input type="checkbox" id="den3Checkbox">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </li>
 
+                    <li class="pick_tt">
+                        <div class="pick_iteam">
+                            <p>đèn 4</p>
+                            <p>Trạng thái</p>
+                            <label class="switch">
+                                <input type="checkbox" id="den4Checkbox">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </li>
+                    <li class="pick_tt">
+                        <div class="pick_iteam">
+                            <p>QUAT</p>
+                            <p>Trạng thái</p>
+                            <label class="switch">
+                                <input type="checkbox" id="quatCheckbox">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </li>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="./main.js"></script>
+</body>
 
-client.println("const checkboxes = document.querySelectorAll('input[type=checkbox]');");
-client.println("checkboxes.forEach((checkbox, index) => {");
-client.println("checkbox.dataset.index = index;");
-client.println("checkbox.addEventListener('change', () => {");
-client.println("const isChecked = checkbox.checked;");
-client.println("const lightName = checkbox.parentNode.parentNode.querySelector('p').textContent;");
-client.println("const checkboxIndex = checkbox.dataset.index;");
-client.println("if (isChecked) {");
-client.println("alert(`${lightName} is turned on`);");
-client.println("window.location.href = `/home/${checkboxIndex}`;");
-client.println("} else {");
-client.println("alert(`${lightName} is turned off`);");
-client.println("window.location.href = `/home/${checkboxIndex}`;");
-client.println("}");
-client.println("});");
-client.println("});");
-
-if (trang_thai_led1=="tat") {
-    client.println("checkboxes[0].checked=!true;");
-} 
-else {
-    client.println("checkboxes[0].checked=!true;");
-}               
-if (trang_thai_led2=="tat") {
-    client.println("checkboxes[1].checked=!true;");
-
-} 
-else {
-    client.println("checkboxes[1].checked=!true;");
-    
-}
-if (trang_thai_led3=="tat") {
-    client.println("checkboxes[2].checked=!true;");
-
-} 
-else {
-    client.println("checkboxes[2].checked=!true;");
-
-}
-if (trang_thai_led4=="tat") {
-    client.println("checkboxes[3].checked=!true;");
-
-} 
-else {
-    client.println("checkboxes[3].checked=!true;");
-
-}
-
-client.println("<script src="./main.js"></script>");
-
-
-
- client.println("</body>");
- client.println("");
- client.println("</html>")
- break;
-} else { 
-  currentLine = "";
-}
-} else if (c != 'r') {  
-currentLine += c;      
-}
-}
-} 
-header = "";
-client.stop();// ngat ket noi
-
-}
-
-}
+</html>
